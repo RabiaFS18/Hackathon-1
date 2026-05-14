@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Chatbot</title>
+  <style>
+    body { font-family: Arial; background:#f4f4f4; }
+    #chat { width:600px; margin:40px auto; background:white; padding:20px; border-radius:8px; }
+    #messages { height:300px; overflow-y:auto; border:1px solid #ddd; padding:10px; margin-bottom:10px; }
+    .user { color:blue; margin:5px 0; }
+    .bot { color:green; margin:5px 0; }
+  </style>
+</head>
+<body>
+
+<div id="chat">
+  <h2>AI Robotics Chatbot</h2>
+  <div id="messages"></div>
+
+  <input id="question" style="width:80%" placeholder="Ask something..." />
+  <button onclick="send()">Send</button>
+</div>
+
+<script>
+async function send() {
+  const question = document.getElementById("question").value;
+
+  document.getElementById("messages").innerHTML +=
+    `<div class="user"><b>You:</b> ${question}</div>`;
+
+  const response = await fetch("http://127.0.0.1:8000/chat?question=" + question, {
+    method: "POST"
+  });
+
+  const data = await response.json();
+
+  document.getElementById("messages").innerHTML +=
+    `<div class="bot"><b>Bot:</b> ${data.answer}</div>`;
+
+  document.getElementById("question").value = "";
+}
+</script>
+
+</body>
+</html>
